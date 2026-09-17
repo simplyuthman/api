@@ -21,12 +21,12 @@ Everything below is a decision that has already been made. Do not swap it, upgra
 - **Runtime/language:** Node.js, TypeScript. No JavaScript-only files in `/api/src`.
 - **Framework:** Express. Do not introduce Fastify, Koa, NestJS, or any other framework.
 - **ORM:** Prisma. Do not hand-write raw SQL migrations. Do not swap in TypeORM, Drizzle, or a query builder.
-- **Database:** Postgres, managed, on Railway. Do not use SQLite, MongoDB, or a local file DB, even for "quick testing."
+- **Database:** Postgres, managed, on Neon. Do not use SQLite, MongoDB, or a local file DB, even for "quick testing."
 - **Validation:** Zod. Do not use Joi, Yup, or manual `if` chains for request validation.
 - **Rate limiting:** `express-rate-limit`. Do not hand-roll rate limiting.
 - **Data generation:** `@faker-js/faker`. Do not pull in a real or scraped property dataset, and do not use Mockaroo, DummyJSON, or any other source.
-- **API deploy target:** Railway (API + Postgres in the same project).
-- **Consumer app:** a single static HTML file with vanilla JavaScript. No React, no Vue, no Vite, no bundler, no build step of any kind.
+- **API deploy target:**Neon and Upstash.
+- **Consumer app:** React with Vite.
 - **Consumer deploy target:** Vercel.
 - **Data model:** exactly three resources — `Agency`, `Agent`, `Listing` — in the hierarchy Agency → Agent → Listing, using the Prisma schema already defined in the PRD (Section 9), verbatim. Do not add fields, models, or relations that are not in that schema without flagging it first.
 
@@ -103,7 +103,13 @@ Use this exact folder structure. Do not reorganize it, do not add extra top-leve
   README.md                    # full endpoint docs, curl examples, design decisions
 
 /consumer
-  index.html                   # single static file, vanilla JS, no dependencies
+  package.json
+  vite.config.ts
+  index.html
+  src/
+    App.tsx
+    main.tsx
+    index.css
 
 AGENTS.md
 ```
@@ -112,7 +118,7 @@ Rules for this structure:
 - Each resource (`agencies`, `agents`, `listings`) gets its own folder under `/modules`. Route → controller → service is a one-way chain: routes call controllers, controllers call services, services talk to Prisma. Never let a route file query the database directly.
 - All Zod schemas live beside the resource they validate, never in a shared "schemas" dump file.
 - Response and error envelopes are built in exactly one place (`utils/envelope.ts`) and imported everywhere else. Never construct the envelope shape inline in a controller.
-- The consumer app has zero shared code, zero shared `node_modules`, and zero build step tying it to `/api`. It is one HTML file that could be dragged onto any static host and work.
+- The consumer app has zero shared code, zero shared `node_modules`, and zero build step tying it to `/api`. It is a standalone React + Vite application deployable to Vercel.
 
 ---
 
