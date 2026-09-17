@@ -1,0 +1,33 @@
+{
+  "name": "property-market-api",
+  "version": "1.0.0",
+  "description": "Read-only REST API serving property market data (agencies, agents, listings).",
+  "main": "dist/server.js",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node src/server.ts",
+    "start": "node dist/server.js",
+    "seed": "ts-node --transpile-only --project tsconfig.seed.json prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^9.3.0",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.0",
+    "prisma": "^5.22.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  },
+  "prisma": {
+    "seed": "ts-node --transpile-only --project tsconfig.seed.json prisma/seed.ts"
+  }
+}
